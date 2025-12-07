@@ -1,0 +1,121 @@
+openapi: 3.0.0
+info:
+  title: Chat API
+  description: API for RAG chatbot functionality
+  version: 1.0.0
+paths:
+  /api/v1/chat/start:
+    post:
+      summary: Start a new chat session
+      responses:
+        '200':
+          description: New chat session created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatSession'
+  /api/v1/chat/{sessionId}/query:
+    post:
+      summary: Send a query to the RAG chatbot
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatQuery'
+      responses:
+        '200':
+          description: Chat response from RAG system
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+        '404':
+          description: Session not found
+components:
+  schemas:
+    ChatSession:
+      type: object
+      properties:
+        session_id:
+          type: string
+          description: Unique identifier for the chat session
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - session_id
+        - created_at
+    ChatQuery:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The user's message/query
+          example: "Explain how Gazebo simulates physics"
+        context:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+          description: Previous conversation context (optional)
+      required:
+        - message
+    ChatResponse:
+      type: object
+      properties:
+        response:
+          type: string
+          description: The chatbot's response
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/Source'
+          description: List of sources used to generate the response
+        session_id:
+          type: string
+          description: The session ID
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - response
+        - sources
+        - session_id
+        - timestamp
+    ChatMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          enum: [user, assistant]
+        content:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - role
+        - content
+        - timestamp
+    Source:
+      type: object
+      properties:
+        chapter_id:
+          type: string
+        chapter_title:
+          type: string
+        content:
+          type: string
+        similarity_score:
+          type: number
+          format: float
+      required:
+        - chapter_id
+        - chapter_title
+        - content

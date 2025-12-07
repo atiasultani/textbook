@@ -1,0 +1,111 @@
+openapi: 3.0.0
+info:
+  title: Textbook API
+  description: API for textbook content management and retrieval
+  version: 1.0.0
+paths:
+  /api/v1/textbook/chapters:
+    get:
+      summary: Get all textbook chapters
+      responses:
+        '200':
+          description: List of all textbook chapters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Chapter'
+  /api/v1/textbook/chapters/{chapterId}:
+    get:
+      summary: Get a specific textbook chapter
+      parameters:
+        - name: chapterId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A single textbook chapter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chapter'
+        '404':
+          description: Chapter not found
+  /api/v1/textbook/search:
+    post:
+      summary: Search textbook content
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+components:
+  schemas:
+    Chapter:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        slug:
+          type: string
+        order:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - title
+        - content
+        - slug
+        - order
+    SearchRequest:
+      type: object
+      properties:
+        query:
+          type: string
+          description: The search query
+          example: "What are ROS 2 nodes?"
+        top_k:
+          type: integer
+          description: Number of results to return
+          default: 5
+      required:
+        - query
+    SearchResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchResult'
+    SearchResult:
+      type: object
+      properties:
+        chapter_id:
+          type: string
+        chapter_title:
+          type: string
+        content:
+          type: string
+        similarity_score:
+          type: number
+          format: float
