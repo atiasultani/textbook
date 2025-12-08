@@ -65,12 +65,12 @@ const config = {
           {
             title: 'Chapters',
             items: [
-              { label: 'Introduction to Physical AI', to: '/docs/intro-physical-ai' },
-              { label: 'Basics of Humanoid Robotics', to: '/docs/basics-humanoid-robotics' },
-              { label: 'ROS 2 Fundamentals', to: '/docs/ros-2-fundamentals' },
-              { label: 'Digital Twin Simulation', to: '/docs/digital-twin-simulation' },
-              { label: 'Vision-Language-Action Systems', to: '/docs/vision-language-action' },
-              { label: 'Capstone', to: '/docs/capstone' },
+              { label: 'Introduction to Physical AI', to: '/docs/intro-physical-ai/intro' },
+              { label: 'Basics of Humanoid Robotics', to: '/docs/basics-humanoid-robotics/intro' },
+              { label: 'ROS 2 Fundamentals', to: '/docs/ros-2-fundamentals/intro' },
+              { label: 'Digital Twin Simulation', to: '/docs/digital-twin-simulation/intro' },
+              { label: 'Vision-Language-Action Systems', to: '/docs/vision-language-action/intro' },
+              { label: 'Capstone', to: '/docs/capstone/intro' },
             ],
           },
           {

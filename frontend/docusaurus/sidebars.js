@@ -1,17 +1,6 @@
-// @ts-check
-
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 const sidebars = {
   tutorialSidebar: [
-    {
-      type: 'category',
-      label: 'Introduction',
-      items: ['intro'],
-      link: {
-        type: 'doc',
-        id: 'intro',
-      },
-    },
     {
       type: 'category',
       label: 'Textbook Chapters',
