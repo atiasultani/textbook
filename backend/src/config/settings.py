@@ -8,12 +8,12 @@ class Settings(BaseSettings):
     neon_database_url: str = os.getenv("NEON_DATABASE_URL", "")
 
     # Qdrant settings
-    qdrant_url: str = os.getenv("QDRANT_URL", "http://localhost:6333")
+    qdrant_url: str = os.getenv("QDRANT_URL", "")
     qdrant_api_key: Optional[str] = os.getenv("QDRANT_API_KEY")
 
     # OpenAI settings
-    openai_api_key: str = os.getenv("OPENAI_API_KEY", "")
-    openai_model: str = os.getenv("OPENAI_MODEL", "text-embedding-ada-002")
+    cohere_api_key: str = os.getenv("COHERE_API_KEY", "")
+    embedding_model: str = os.getenv("EMBEDDING_MODEL", "")
 
     # Application settings
     app_name: str = "Textbook RAG API"
