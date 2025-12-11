@@ -72,12 +72,9 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
     user = User(username=token_data.username)
     return user
 
-
 def authenticate_user(username: str, password: str) -> Optional[User]:
-    """Authenticate user (placeholder implementation)"""
-    # This is a placeholder implementation
-    # In a real system, you would verify credentials against a database
-    # For demo purposes, we'll accept any non-empty username/password
-    if username and password:
-        return User(username=username)
+    """Authenticate user (hardcoded for chatbot demo)"""
+    # Only accept admin/admin123
+    if username == "admin" and password == "admin123":
+        return User(username="admin")
     return None

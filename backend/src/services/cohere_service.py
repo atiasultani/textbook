@@ -3,6 +3,8 @@ from typing import List, Dict, Any, Optional
 from pydantic import BaseModel
 import os
 from ..models.chat import Source
+from dotenv import load_dotenv
+load_dotenv()   # <-- THIS MUST RUN BEFORE ANYTHING ELSE
 
 
 class CohereConfig(BaseModel):
