@@ -1,8 +1,8 @@
 ---
-description: "Task list for AI-Native Textbook with RAG Chatbot implementation"
+description: "Task list for AI-Native Textbook with Enhanced RAG Chatbot and UI/UX implementation"
 ---
 
-# Tasks: AI-Native Textbook with RAG Chatbot
+# Tasks: AI-Native Textbook with Enhanced RAG Chatbot and UI/UX
 
 **Input**: Design documents from `/specs/001-textbook-gen/`
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
@@ -27,7 +27,7 @@ description: "Task list for AI-Native Textbook with RAG Chatbot implementation"
 **Purpose**: Project initialization and basic structure
 
 - [X] T001 Create project structure with backend and frontend directories
-- [X] T002 Initialize Python project with FastAPI, Qdrant, Neon dependencies in backend/
+- [X] T002 Initialize Python project with Cohere Agents/ChatKit SDKs, FastAPI, Qdrant, Neon dependencies in backend/
 - [X] T003 [P] Initialize Docusaurus project in frontend/docusaurus/
 - [ ] T004 [P] Configure linting and formatting tools for Python and JavaScript
 - [X] T005 Create initial directory structures per plan.md
@@ -52,67 +52,77 @@ description: "Task list for AI-Native Textbook with RAG Chatbot implementation"
 
 ---
 
-## Phase 3: User Story 1 - Access Interactive Textbook Content (Priority: P1) 🎯 MVP
+## Phase 3: User Story 1 - Access Interactive Textbook Content with Enhanced UI (Priority: P1) 🎯 MVP
 
-**Goal**: Students can access textbook content and interact with RAG chatbot to get explanations about specific concepts
+**Goal**: Students can access textbook content with attractive, animated UI elements and interact with Cohere-powered RAG chatbot to get explanations about specific concepts, including asking about selected text
 
-**Independent Test**: Can access textbook chapters and use the RAG chatbot to answer questions about the content, delivering immediate educational value.
+**Independent Test**: Can access textbook chapters with animated UI elements and use the Cohere-powered RAG chatbot to answer questions about the content (including selected text), delivering immediate educational value with an engaging user experience.
 
 ### Implementation for User Story 1
 
-- [X] T013 [P] [US1] Create TextbookChapter model in backend/src/models/textbook.py
-- [X] T014 [P] [US1] Create ChatSession model in backend/src/models/chat.py
-- [X] T015 [P] [US1] Create UserQuery model in backend/src/models/chat.py
-- [X] T016 [US1] Implement TextbookChapter service in backend/src/services/neon_service.py
-- [X] T017 [US1] Implement RAG service in backend/src/services/rag_service.py
-- [X] T018 [US1] Implement textbook API endpoints in backend/src/api/v1/textbook.py
-- [X] T019 [US1] Implement chat API endpoints in backend/src/api/v1/chat.py
-- [X] T020 [US1] Create Chatbot component in frontend/docusaurus/src/components/Chatbot.jsx
-- [X] T021 [US1] Integrate Chatbot component with textbook pages in frontend/docusaurus/
-- [X] T022 [US1] Add validation and error handling for User Story 1
+- [ ] T013 [P] [US1] Create TextbookChapter model in backend/src/models/textbook.py
+- [ ] T014 [P] [US1] Create ChatSession model in backend/src/models/chat.py
+- [ ] T015 [P] [US1] Create UserQuery model with selected_text field in backend/src/models/chat.py
+- [ ] T016 [P] [US1] Create ChatResponse model in backend/src/models/chat.py
+- [ ] T017 [P] [US1] Create ContentBlock model in backend/src/models/textbook.py
+- [ ] T018 [US1] Implement TextbookChapter service in backend/src/services/neon_service.py
+- [X] T019 [US1] Implement Cohere service in backend/src/services/cohere_service.py
+- [X] T020 [US1] Enhance RAG service to integrate with Cohere in backend/src/services/rag_service.py
+- [ ] T021 [US1] Implement textbook API endpoints in backend/src/api/v1/textbook.py
+- [X] T022 [US1] Implement Cohere API endpoints in backend/src/api/v1/cohere.py
+- [X] T023 [US1] Enhance chat API endpoints to support Cohere integration in backend/src/api/v1/chat.py
+- [X] T024 [US1] Create Chatbot component with enhanced UI in frontend/docusaurus/src/components/Chatbot.jsx
+- [X] T025 [US1] Create TextSelection component for select-text functionality in frontend/docusaurus/src/components/TextSelection.jsx
+- [X] T026 [US1] Create AnimatedUI component for engaging animations in frontend/docusaurus/src/components/AnimatedUI.jsx
+- [X] T027 [US1] Integrate Chatbot and TextSelection components with textbook pages in frontend/docusaurus/
+- [X] T028 [US1] Add validation and error handling for User Story 1
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
 ---
 
-## Phase 4: User Story 2 - Navigate Structured Learning Content (Priority: P1)
+## Phase 4: User Story 2 - Navigate Structured Learning Content with Engaging UI (Priority: P1)
 
-**Goal**: Learners can navigate through a well-organized textbook with chapters on Physical AI, Robotics, ROS 2, Digital Twins, and Vision-Language-Action Systems following a logical learning progression
+**Goal**: Learners can navigate through a well-organized textbook with animated UI elements and chapters on Physical AI, Robotics, ROS 2, Digital Twins, and Vision-Language-Action Systems following a logical learning progression with sustained engagement
 
-**Independent Test**: Can navigate through all chapters and verify the logical flow and organization of content, delivering a complete learning experience.
+**Independent Test**: Can navigate through all chapters with animated UI elements and verify the logical flow and organization of content with engaging visual feedback, delivering a complete learning experience with enhanced visual appeal.
 
 ### Implementation for User Story 2
 
-- [X] T023 [P] [US2] Create textbook content files for 6 chapters in frontend/docusaurus/docs/
-- [X] T024 [P] [US2] Generate content for Introduction to Physical AI chapter in frontend/docusaurus/docs/intro-physical-ai/
-- [X] T025 [P] [US2] Generate content for Basics of Humanoid Robotics chapter in frontend/docusaurus/docs/basics-humanoid-robotics/
-- [X] T026 [P] [US2] Generate content for ROS 2 Fundamentals chapter in frontend/docusaurus/docs/ros-2-fundamentals/
-- [X] T027 [P] [US2] Generate content for Digital Twin Simulation chapter in frontend/docusaurus/docs/digital-twin-simulation/
-- [X] T028 [P] [US2] Generate content for Vision-Language-Action Systems chapter in frontend/docusaurus/docs/vision-language-action/
-- [X] T029 [P] [US2] Generate content for Capstone chapter in frontend/docusaurus/docs/capstone/
-- [X] T030 [US2] Configure sidebar navigation to reflect 6-chapter structure in frontend/docusaurus/sidebars.js
-- [X] T031 [US2] Implement navigation components for textbook progression in frontend/docusaurus/src/components/
-- [X] T032 [US2] Add chapter ordering validation in backend/src/models/textbook.py
+- [ ] T029 [P] [US2] Create textbook content files for 6 chapters in frontend/docusaurus/docs/
+- [ ] T030 [P] [US2] Generate content for Introduction to Physical AI chapter in frontend/docusaurus/docs/intro-physical-ai/
+- [ ] T031 [P] [US2] Generate content for Basics of Humanoid Robotics chapter in frontend/docusaurus/docs/basics-humanoid-robotics/
+- [ ] T032 [P] [US2] Generate content for ROS 2 Fundamentals chapter in frontend/docusaurus/docs/ros-2-fundamentals/
+- [ ] T033 [P] [US2] Generate content for Digital Twin Simulation chapter in frontend/docusaurus/docs/digital-twin-simulation/
+- [ ] T034 [P] [US2] Generate content for Vision-Language-Action Systems chapter in frontend/docusaurus/docs/vision-language-action/
+- [ ] T035 [P] [US2] Generate content for Capstone chapter in frontend/docusaurus/docs/capstone/
+- [ ] T036 [US2] Configure sidebar navigation to reflect 6-chapter structure with animations in frontend/docusaurus/sidebars.js
+- [ ] T037 [US2] Implement navigation components with animations for textbook progression in frontend/docusaurus/src/components/
+- [ ] T038 [US2] Add chapter ordering validation in backend/src/models/textbook.py
+- [ ] T039 [US2] Create animation configuration for textbook chapters in frontend/docusaurus/src/animations/
+- [ ] T040 [US2] Implement animated UI elements for enhanced engagement in frontend/docusaurus/src/components/
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
 ---
 
-## Phase 5: User Story 3 - Search and Query Textbook Content (Priority: P2)
+## Phase 5: User Story 3 - Enhanced RAG Chatbot with Cohere Integration (Priority: P1)
 
-**Goal**: Students can search and query the textbook content using natural language to quickly find relevant information and get detailed explanations about specific concepts
+**Goal**: Students can use an advanced RAG chatbot powered by Cohere Agents/ChatKit SDKs to search and query textbook content using natural language to quickly find relevant information and get detailed explanations about specific concepts
 
-**Independent Test**: Can enter various search queries and verify that the RAG system returns relevant textbook content, delivering efficient information retrieval.
+**Independent Test**: Can enter various search queries and verify that the Cohere-powered RAG system returns relevant textbook content with accurate answers, delivering efficient and reliable information retrieval.
 
 ### Implementation for User Story 3
 
-- [X] T033 [P] [US3] Create KnowledgeEmbedding model in backend/src/models/embeddings.py
-- [X] T034 [P] [US3] Implement Qdrant service in backend/src/services/qdrant_service.py
-- [X] T035 [US3] Implement search API endpoint in backend/src/api/v1/search.py
-- [X] T036 [US3] Implement embedding generation service in backend/src/services/rag_service.py
-- [X] T037 [US3] Create Search component in frontend/docusaurus/src/components/Search.jsx
-- [X] T038 [US3] Integrate search functionality with textbook pages in frontend/docusaurus/
-- [X] T039 [US3] Add search result display with context in frontend/docusaurus/src/components/
+- [ ] T041 [P] [US3] Create KnowledgeEmbedding model in backend/src/models/embeddings.py
+- [ ] T042 [P] [US3] Implement Qdrant service in backend/src/services/qdrant_service.py
+- [ ] T043 [US3] Implement search API endpoint with Cohere integration in backend/src/api/v1/search.py
+- [ ] T044 [US3] Implement embedding generation service with Cohere compatibility in backend/src/services/rag_service.py
+- [ ] T045 [US3] Create Search component with enhanced UI in frontend/docusaurus/src/components/Search.jsx
+- [ ] T046 [US3] Integrate search functionality with textbook pages in frontend/docusaurus/
+- [ ] T047 [US3] Add search result display with context and animations in frontend/docusaurus/src/components/
+- [ ] T048 [US3] Implement Cohere configuration API endpoint in backend/src/api/v1/cohere.py
+- [ ] T049 [US3] Add source attribution for Cohere responses in frontend components
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -122,11 +132,12 @@ description: "Task list for AI-Native Textbook with RAG Chatbot implementation"
 
 **Purpose**: Populate textbook content and generate embeddings to make RAG functionality complete
 
-- [X] T040 Populate textbook chapters with actual content in backend/src/
-- [X] T041 Generate embeddings for all textbook content in backend/src/
-- [X] T042 Implement content validation to ensure RAG answers only from textbook content
-- [X] T043 Create CLI command to populate textbook content in backend/src/cli/
-- [X] T044 Create CLI command to generate embeddings in backend/src/cli/
+- [ ] T050 Populate textbook chapters with actual content in backend/src/
+- [ ] T051 Generate embeddings for all textbook content in backend/src/
+- [ ] T052 Implement content validation to ensure Cohere responses only from textbook content
+- [ ] T053 Create CLI command to populate textbook content in backend/src/cli/
+- [ ] T054 Create CLI command to generate embeddings in backend/src/cli/
+- [ ] T055 Create CLI command to generate content blocks in backend/src/cli/
 
 ---
 
@@ -134,12 +145,13 @@ description: "Task list for AI-Native Textbook with RAG Chatbot implementation"
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [X] T045 [P] Documentation updates in docs/
-- [X] T046 Code cleanup and refactoring
-- [ ] T047 Performance optimization across all stories
-- [ ] T048 [P] Additional unit tests in backend/tests/unit/ and frontend/docusaurus/tests/
-- [X] T049 Security hardening
-- [X] T050 Run quickstart.md validation
+- [ ] T056 [P] Documentation updates in docs/
+- [ ] T057 Code cleanup and refactoring
+- [ ] T058 Performance optimization across all stories
+- [ ] T059 [P] Additional unit tests in backend/tests/unit/ and frontend/docusaurus/tests/
+- [ ] T060 Security hardening
+- [ ] T061 Run quickstart.md validation
+- [ ] T062 Animation performance optimization to ensure smooth experience
 
 ---
 
@@ -182,10 +194,11 @@ description: "Task list for AI-Native Textbook with RAG Chatbot implementation"
 # Launch all models for User Story 1 together:
 Task: "Create TextbookChapter model in backend/src/models/textbook.py"
 Task: "Create ChatSession model in backend/src/models/chat.py"
-Task: "Create UserQuery model in backend/src/models/chat.py"
+Task: "Create UserQuery model with selected_text field in backend/src/models/chat.py"
 
 # Launch all components for User Story 1 together:
-Task: "Create Chatbot component in frontend/docusaurus/src/components/Chatbot.jsx"
+Task: "Create Chatbot component with enhanced UI in frontend/docusaurus/src/components/Chatbot.jsx"
+Task: "Create TextSelection component for select-text functionality in frontend/docusaurus/src/components/TextSelection.jsx"
 Task: "Implement textbook API endpoints in backend/src/api/v1/textbook.py"
 ```
 

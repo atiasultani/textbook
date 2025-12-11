@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Textbook API
-  description: API for textbook content management and retrieval
+  description: API for textbook content management and retrieval with enhanced UI/UX features
   version: 1.0.0
 paths:
   /api/v1/textbook/chapters:
@@ -32,6 +32,46 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Chapter'
+        '404':
+          description: Chapter not found
+  /api/v1/textbook/chapters/{chapterId}/blocks:
+    get:
+      summary: Get content blocks for a specific chapter
+      parameters:
+        - name: chapterId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of content blocks in the chapter
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentBlock'
+        '404':
+          description: Chapter not found
+  /api/v1/textbook/chapters/{chapterId}/animated-elements:
+    get:
+      summary: Get animated UI elements for a specific chapter
+      parameters:
+        - name: chapterId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of animated UI elements for the chapter
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnimatedUIElement'
         '404':
           description: Chapter not found
   /api/v1/textbook/search:
@@ -65,6 +105,10 @@ components:
           type: string
         order:
           type: integer
+        content_blocks:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContentBlock'
         created_at:
           type: string
           format: date-time
@@ -77,6 +121,68 @@ components:
         - content
         - slug
         - order
+    ContentBlock:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the content block
+        content:
+          type: string
+          description: The text content of the block
+        block_type:
+          type: string
+          description: Type of content (paragraph, code, heading, etc.)
+        position:
+          type: integer
+          description: Order within the chapter
+        embedding_id:
+          type: string
+          description: Reference to vector embedding in Qdrant
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - content
+        - block_type
+        - position
+    AnimatedUIElement:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the animated element
+        element_type:
+          type: string
+          description: Type of animated element (tooltip, highlight, transition, etc.)
+        target_selector:
+          type: string
+          description: CSS selector for the target element
+        animation_type:
+          type: string
+          description: Type of animation (fade, slide, bounce, etc.)
+        trigger_event:
+          type: string
+          description: Event that triggers the animation
+        enabled:
+          type: boolean
+          description: Whether the animation is currently enabled
+        chapter_id:
+          type: string
+          description: Reference to specific chapter if applicable
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - element_type
+        - target_selector
+        - animation_type
+        - enabled
     SearchRequest:
       type: object
       properties:
@@ -84,6 +190,10 @@ components:
           type: string
           description: The search query
           example: "What are ROS 2 nodes?"
+        selected_text:
+          type: string
+          description: Text selected by user for targeted questioning (optional)
+          example: "ROS 2 nodes are the fundamental unit of a ROS system"
         top_k:
           type: integer
           description: Number of results to return

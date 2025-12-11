@@ -1,7 +1,7 @@
 <!-- Sync Impact Report:
-Version change: 0.0.0 → 1.0.0
-List of modified principles: All principles added
-Added sections: Purpose, Scope, Key Features, Constraints, Success Criteria
+Version change: 1.0.0 → 1.1.0
+List of modified principles: Updated technologies to include Cohere Agents/ChatKit SDKs, enhanced UI/UX requirements
+Added sections: Enhanced UI/UX requirements
 Removed sections: None
 Templates requiring updates:
   - .specify/templates/plan-template.md: ⚠ pending
@@ -42,10 +42,13 @@ All chosen technologies and services must be compatible with free-tier usage to 
 ### VI. RAG Answers ONLY from Book Text
 The RAG chatbot must strictly derive its answers from the content of the textbook. It must not hallucinate or use external knowledge sources for its responses.
 
+### VII. Modern UI/UX Excellence
+The frontend must feature an attractive, eye-catching design with animated elements to enhance reader interest and engagement. Visual appeal and user experience are critical success factors.
+
 ## Project Overview
 
 ### Purpose
-Create a short, clean, professional AI-Native textbook based on the Physical AI & Humanoid Robotics course. The book must serve as a fast, simple, high-quality learning resource built with a modern Docusaurus UI and a fully integrated free-tier RAG chatbot.
+Create a short, clean, professional AI-Native textbook based on the Physical AI & Humanoid Robotics course. The book must serve as a fast, simple, high-quality learning resource built with a modern, attractive UI featuring animated elements and a fully integrated free-tier RAG chatbot using Cohere Agents/ChatKit SDKs, FastAPI, Neon Serverless Postgres database, and Qdrant Cloud Free Tier.
 
 ### Scope and Dependencies
 - In Scope:
@@ -56,29 +59,33 @@ Create a short, clean, professional AI-Native textbook based on the Physical AI 
     4. Digital Twin Simulation (Gazebo + Isaac)
     5. Vision-Language-Action Systems
     6. Capstone: Simple AI-Robot Pipeline
-  - Clean UI
+  - Attractive, animated UI/UX with eye-catching design
   - Free-tier friendly
   - Lightweight embeddings
+  - Integrated RAG chatbot with select-text → Ask AI functionality
 - Out of Scope: N/A
-- External Dependencies: Docusaurus, Qdrant, Neon, FastAPI
+- External Dependencies: Docusaurus, Cohere Agents/ChatKit SDKs, Qdrant, Neon, FastAPI
 
 ### Key Features
-- Docusaurus textbook
-- RAG chatbot (Qdrant + Neon + FastAPI)
-- Select-text → Ask AI
+- Docusaurus textbook with animated, engaging UI
+- RAG chatbot (Cohere Agents/ChatKit SDKs + FastAPI + Neon + Qdrant)
+- Select-text → Ask AI functionality
+- Animated UI elements to enhance reader engagement
 - Optional Urdu / Personalize features
 
 ### Constraints
 - No heavy GPU usage
 - Minimal embeddings
+- Free-tier service compatibility
 
 ### Success Criteria
 - Build success
-- Accurate chatbot
-- Clean UI
+- Accurate chatbot responses from book content only
+- Attractive, engaging UI with animations
 - Smooth GitHub Pages deployment
+- Responsive chatbot interface
 
 ## Governance
 This constitution serves as the foundational document for the Physical AI & Humanoid Robotics — Essentials project. All architectural decisions, design choices, and implementation efforts must adhere to the principles and guidelines outlined herein. Amendments to this constitution require careful consideration, documentation, and approval from core stakeholders. All pull requests and code reviews must verify compliance with these principles. Complexity must always be justified against the core principles.
 
-**Version**: 1.0.0 | **Ratified**: 2025-12-07 | **Last Amended**: 2025-12-07
+**Version**: 1.1.0 | **Ratified**: 2025-12-07 | **Last Amended**: 2025-12-11

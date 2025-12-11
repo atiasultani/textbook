@@ -1,0 +1,115 @@
+/* Fade animation */
+.animate-fade {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.animate-fade-hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Slide animation */
+.animate-slide {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.animate-slide-hidden {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Bounce animation */
+.animate-bounce {
+  animation: bounce 0.6s ease;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Pulse animation */
+.animate-pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Highlight animation for text */
+.animate-highlight {
+  background: linear-gradient(120deg, #a8e6ff 0%, #dcedff 100%);
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  transition: background-size 0.5s ease;
+  display: inline;
+  padding: 0.1em 0.2em;
+  border-radius: 0.2em;
+}
+
+.animate-highlight:hover {
+  background-size: 100% 100%;
+}
+
+/* Animated button styles */
+.animated-button {
+  position: relative;
+  overflow: hidden;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  background: linear-gradient(45deg, #007cba, #00a0e6);
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 124, 186, 0.2);
+}
+
+.animated-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 124, 186, 0.3);
+}
+
+.animated-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 124, 186, 0.2);
+}
+
+.animated-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.5s;
+}
+
+.animated-button:hover::before {
+  left: 100%;
+}

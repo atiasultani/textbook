@@ -12,25 +12,27 @@ Create a Docusaurus-based textbook with 6 chapters on Physical AI and Humanoid R
 ## Technical Context
 
 **Language/Version**: Python 3.11, JavaScript/TypeScript for Docusaurus
-**Primary Dependencies**: Docusaurus, FastAPI, Qdrant, Neon, OpenAI API (or compatible embeddings service), Pydantic
+**Primary Dependencies**: Docusaurus, Cohere Agents/ChatKit SDKs, FastAPI, Qdrant, Neon, Pydantic
 **Storage**: Neon PostgreSQL for metadata, Qdrant vector database for embeddings, Docusaurus static files
 **Testing**: pytest for backend, Jest for frontend components
 **Target Platform**: Web application (Linux server deployment, GitHub Pages compatible)
 **Project Type**: Web application (frontend + backend)
 **Performance Goals**: <5 second response time for RAG queries, <3 second page load times, support 100 concurrent users
-**Constraints**: Free-tier compatible services only, minimal embeddings to reduce costs, no heavy GPU usage
+**Constraints**: Free-tier compatible services only, minimal embeddings to reduce costs, no heavy GPU usage, animated UI must not impact performance
 **Scale/Scope**: 6 textbook chapters, thousands of users, educational content delivery
+**New Requirements**: Cohere Agents/ChatKit SDKs integration, select-text → Ask AI functionality, animated UI/UX with engaging visual elements
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-**Simplicity**: Architecture uses minimal components (Docusaurus + FastAPI + Qdrant + Neon)
+**Simplicity**: Architecture uses minimal components (Docusaurus + Cohere Agents/ChatKit SDKs + FastAPI + Qdrant + Neon)
 **Accuracy**: RAG answers will be strictly derived from textbook content (no hallucination)
 **Minimalism**: Focus on core textbook and RAG functionality, avoiding feature bloat
 **Fast Builds**: Docusaurus static site generation optimized for quick builds
-**Free-tier Architecture**: All components (Qdrant Cloud free tier, Neon free tier, OpenAI API) compatible with free usage
+**Free-tier Architecture**: All components (Qdrant Cloud free tier, Neon free tier, Cohere free tier) compatible with free usage
 **RAG Answers ONLY from Book Text**: Implementation will ensure strict content sourcing from textbook
+**Modern UI/UX Excellence**: Frontend will feature attractive, animated UI elements to enhance reader engagement
 
 ## Project Structure
 
@@ -58,12 +60,14 @@ backend/
 │   ├── services/
 │   │   ├── rag_service.py
 │   │   ├── qdrant_service.py
-│   │   └── neon_service.py
+│   │   ├── neon_service.py
+│   │   └── cohere_service.py
 │   ├── api/
 │   │   ├── v1/
 │   │   │   ├── textbook.py
 │   │   │   ├── chat.py
-│   │   │   └── search.py
+│   │   │   ├── search.py
+│   │   │   └── cohere.py
 │   │   └── main.py
 │   └── config/
 │       └── settings.py
@@ -78,9 +82,12 @@ frontend/
 │   │   ├── components/
 │   │   │   ├── Chatbot.jsx
 │   │   │   ├── Search.jsx
-│   │   │   └── TextbookContent.jsx
+│   │   │   ├── TextbookContent.jsx
+│   │   │   ├── AnimatedUI.jsx
+│   │   │   └── TextSelection.jsx
 │   │   ├── pages/
-│   │   └── css/
+│   │   ├── css/
+│   │   └── animations/
 │   ├── docs/
 │   │   ├── intro-physical-ai/
 │   │   ├── basics-humanoid-robotics/
@@ -96,7 +103,7 @@ frontend/
     └── e2e/
 ```
 
-**Structure Decision**: Web application structure selected with separate backend (FastAPI) and frontend (Docusaurus) to maintain clean separation of concerns. The backend handles RAG operations and API, while Docusaurus frontend provides textbook UI with integrated chatbot component.
+**Structure Decision**: Web application structure selected with separate backend (FastAPI) and frontend (Docusaurus) to maintain clean separation of concerns. The backend handles RAG operations, Cohere integration, and API services, while Docusaurus frontend provides textbook UI with integrated chatbot, animated UI elements, and text selection functionality.
 
 ## Complexity Tracking
 

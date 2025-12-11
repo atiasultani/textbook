@@ -25,6 +25,7 @@ class ChatSession(ChatSessionBase):
 class UserQueryBase(BaseModel):
     query_text: str
     session_id: str
+    selected_text: Optional[str] = None  # Text selected by user for targeted questioning
     language: str = "en"
 
 
@@ -64,5 +65,7 @@ class Source(BaseModel):
 class ChatResponse(BaseModel):
     response: str
     sources: List[Source]
+    confidence_score: float  # Confidence level of the response (0-1)
+    is_hallucinated: bool  # Flag if response was not based on textbook content
     session_id: str
     timestamp: datetime

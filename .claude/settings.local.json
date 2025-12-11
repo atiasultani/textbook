@@ -10,7 +10,9 @@
       "Bash(.specify/scripts/bash/check-prerequisites.sh --json)",
       "Bash(node --version)",
       "Bash(npm --version)",
-      "Bash(npm install)"
+      "Bash(npm install)",
+      "Bash(.specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks)",
+      "Bash(git rev-parse --git-dir)"
     ],
     "deny": [],
     "ask": []

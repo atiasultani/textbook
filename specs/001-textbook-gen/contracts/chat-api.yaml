@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Chat API
-  description: API for RAG chatbot functionality
+  description: API for Cohere-powered RAG chatbot functionality with enhanced features
   version: 1.0.0
 paths:
   /api/v1/chat/start:
@@ -16,7 +16,7 @@ paths:
                 $ref: '#/components/schemas/ChatSession'
   /api/v1/chat/{sessionId}/query:
     post:
-      summary: Send a query to the RAG chatbot
+      summary: Send a query to the Cohere-powered RAG chatbot
       parameters:
         - name: sessionId
           in: path
@@ -31,13 +31,24 @@ paths:
               $ref: '#/components/schemas/ChatQuery'
       responses:
         '200':
-          description: Chat response from RAG system
+          description: Chat response from Cohere-powered RAG system
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChatResponse'
         '404':
           description: Session not found
+  /api/v1/chat/cohere-config:
+    get:
+      summary: Get Cohere integration configuration
+      description: Retrieve the current Cohere API configuration for the application
+      responses:
+        '200':
+          description: Cohere configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CohereConfig'
 components:
   schemas:
     ChatSession:
@@ -46,12 +57,25 @@ components:
         session_id:
           type: string
           description: Unique identifier for the chat session
+        session_token:
+          type: string
+          description: Anonymous session identifier
+        user_id:
+          type: string
+          description: Identifier for the user (if tracking)
         created_at:
           type: string
           format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        is_active:
+          type: boolean
+          description: Whether the session is currently active
       required:
         - session_id
         - created_at
+        - is_active
     ChatQuery:
       type: object
       properties:
@@ -59,6 +83,10 @@ components:
           type: string
           description: The user's message/query
           example: "Explain how Gazebo simulates physics"
+        selected_text:
+          type: string
+          description: Text selected by user for targeted questioning (optional)
+          example: "Gazebo uses ODE for physics simulation"
         context:
           type: array
           items:
@@ -77,6 +105,13 @@ components:
           items:
             $ref: '#/components/schemas/Source'
           description: List of sources used to generate the response
+        confidence_score:
+          type: number
+          format: float
+          description: Confidence level of the response (0-1)
+        is_hallucinated:
+          type: boolean
+          description: Flag if response was not based on textbook content
         session_id:
           type: string
           description: The session ID
@@ -86,6 +121,8 @@ components:
       required:
         - response
         - sources
+        - confidence_score
+        - is_hallucinated
         - session_id
         - timestamp
     ChatMessage:
@@ -112,6 +149,9 @@ components:
           type: string
         content:
           type: string
+        content_block_id:
+          type: string
+          description: Reference to the specific content block
         similarity_score:
           type: number
           format: float
@@ -119,3 +159,28 @@ components:
         - chapter_id
         - chapter_title
         - content
+        - content_block_id
+    CohereConfig:
+      type: object
+      properties:
+        model_name:
+          type: string
+          description: Name of the Cohere model being used
+        temperature:
+          type: number
+          format: float
+          description: Temperature setting for response creativity
+        max_tokens:
+          type: integer
+          description: Maximum tokens for responses
+        supports_streaming:
+          type: boolean
+          description: Whether the model supports streaming responses
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - model_name
+        - temperature
+        - max_tokens
+        - supports_streaming

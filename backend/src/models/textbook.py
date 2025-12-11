@@ -4,12 +4,48 @@ from datetime import datetime
 import uuid
 
 
+class ContentBlockBase(BaseModel):
+    chapter_id: str
+    content: str
+    block_type: str  # Type of content (paragraph, code, heading, etc.)
+    position: int  # Order within the chapter
+    embedding_id: Optional[str] = None  # Reference to vector embedding in Qdrant
+
+    @field_validator('position')
+    @classmethod
+    def validate_position(cls, v):
+        if v < 0:
+            raise ValueError('Position must be non-negative')
+        return v
+
+
+class ContentBlockCreate(ContentBlockBase):
+    pass
+
+
+class ContentBlockUpdate(BaseModel):
+    content: Optional[str] = None
+    block_type: Optional[str] = None
+    position: Optional[int] = None
+    embedding_id: Optional[str] = None
+
+
+class ContentBlock(ContentBlockBase):
+    id: str
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
 class TextbookChapterBase(BaseModel):
     title: str
     content: str
     slug: str
     order: int
     metadata: Optional[dict] = None
+    content_blocks: Optional[List[ContentBlock]] = None
 
     @field_validator('order')
     @classmethod
