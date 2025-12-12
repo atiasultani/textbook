@@ -1,7 +1,8 @@
 from pydantic_settings import BaseSettings
 from typing import Optional
 import os
-
+from dotenv import load_dotenv
+load_dotenv()
 
 class Settings(BaseSettings):
     # Database settings
