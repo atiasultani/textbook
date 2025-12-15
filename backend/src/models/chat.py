@@ -135,7 +135,8 @@ class RAGChatRequest(BaseModel):
     question: str
     context: ContextContent
     auth_status: Optional[AuthenticationStatus] = None
-    mode: str = Field(..., regex=r"^(selection-restricted|rag-mode)$")  # "selection-restricted" | "rag-mode"
+    mode: str = Field(..., pattern=r"^(selection-restricted|rag-mode)$")
+
 
 
 class RAGChatResponse(BaseModel):
