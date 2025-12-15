@@ -1,8 +1,18 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Request, HTTPException, Depends
 from pydantic import BaseModel
 from typing import Optional, List
-from src.models.chat import ChatSession, ChatMessage, ChatResponse, Source
-from src.services.rag_service import create_session, query_rag
+from datetime import datetime
+from src.models.chat import (
+    ChatSession,
+    ChatMessage,
+    ChatResponse,
+    Source,
+    RAGChatRequest,
+    RAGChatResponse,
+    ChatStatusEnum
+)
+from src.services.rag_service import create_session, query_rag, AuthenticatedRAGService
+from src.services.auth_service import AuthService
 from src.auth.auth_handler import get_current_user
 import uuid
 import logging
@@ -17,7 +27,9 @@ class ChatQueryWithSelection(BaseModel):
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+rag_service = AuthenticatedRAGService()
 
+# Existing chat functionality
 @router.post("/chat/start", response_model=ChatSession)
 async def start_chat_session(current_user=Depends(get_current_user)):
     """Start a new chat session (requires authentication)"""
@@ -47,3 +59,55 @@ async def chat_query(session_id: str, query: ChatQueryWithSelection, current_use
     except Exception as e:
         logger.error(f"Error processing query for session {session_id}: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error processing query: {str(e)}")
+
+
+# New authenticated, context-locked RAG functionality
+@router.post("/chat/rag", response_model=RAGChatResponse)
+async def process_rag_chat(request: RAGChatRequest, req: Request):
+    """
+    Process user question with RAG assistant.
+    Process authenticated user questions and return answers based only on provided context.
+    """
+    # Check authentication status from request state (set by middleware)
+    auth_status = getattr(req.state, 'auth_status', None)
+
+    if not auth_status or auth_status.status != "authenticated":
+        # Return the exact message required by the specification
+        return RAGChatResponse(
+            answer="Please sign in or create an account to use the chatbot.",
+            status=ChatStatusEnum.unauthorized,
+            context_used=None,
+            timestamp=datetime.utcnow()
+        )
+
+    # Process the request using the RAG service
+    response = rag_service.process_request(request)
+
+    return response
+
+
+# Additional endpoint for testing the RAG functionality with authentication check
+@router.post("/chat/rag/test")
+async def test_rag_chat_with_auth_check(request: RAGChatRequest, req: Request):
+    """
+    Test endpoint that shows authentication status before processing.
+    """
+    # Check authentication status from request state (set by middleware)
+    auth_status = getattr(req.state, 'auth_status', None)
+
+    if not auth_status or auth_status.status != "authenticated":
+        return {
+            "authenticated": False,
+            "message": "Please sign in or create an account to use the chatbot.",
+            "timestamp": datetime.utcnow()
+        }
+
+    # If authenticated, process the request
+    response = rag_service.process_request(request)
+
+    return {
+        "authenticated": True,
+        "user_id": auth_status.user_id,
+        "response": response,
+        "timestamp": datetime.utcnow()
+    }

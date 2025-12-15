@@ -4,7 +4,9 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from src.config.settings import settings
 from src.api.v1 import textbook, chat, search, cohere
+from src.api.v1.auth import router as auth_router
 from src.auth.auth_handler import authenticate_user, create_access_token, Token
+from src.services.auth_service import auth_middleware
 import uvicorn
 import logging
 
@@ -18,6 +20,9 @@ app = FastAPI(
     docs_url="/api/docs",  # Enable API documentation
     redoc_url="/api/redoc"
 )
+
+# Add authentication middleware
+app.middleware("http")(auth_middleware)
 
 # Add CORS middleware
 app.add_middleware(
@@ -33,6 +38,7 @@ app.include_router(textbook.router, prefix=settings.api_v1_prefix, tags=["textbo
 app.include_router(chat.router, prefix=settings.api_v1_prefix, tags=["chat"])
 app.include_router(search.router, prefix=settings.api_v1_prefix, tags=["search"])
 app.include_router(cohere.router, prefix=settings.api_v1_prefix, tags=["cohere"])
+app.include_router(auth_router, prefix=settings.api_v1_prefix, tags=["auth"])
 
 @app.get("/")
 def read_root():

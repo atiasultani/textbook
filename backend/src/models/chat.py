@@ -1,7 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
 from datetime import datetime
 import uuid
+from enum import Enum
 
 
 class ChatSessionBase(BaseModel):
@@ -69,3 +70,86 @@ class ChatResponse(BaseModel):
     is_hallucinated: bool  # Flag if response was not based on textbook content
     session_id: str
     timestamp: datetime
+
+
+# New models for the RAG assistant feature
+class AuthenticationStatusEnum(str, Enum):
+    authenticated = "authenticated"
+    unauthenticated = "unauthenticated"
+
+
+class ContextContentTypeEnum(str, Enum):
+    user_selected = "user-selected"
+    retrieved_excerpt = "retrieved-excerpt"
+
+
+class ChatStatusEnum(str, Enum):
+    success = "success"
+    no_content = "no-content"
+    unauthorized = "unauthorized"
+
+
+class AuthenticationStatus(BaseModel):
+    """Represents whether the user is authenticated (authenticated | unauthenticated)"""
+    status: AuthenticationStatusEnum
+    user_id: Optional[str] = None  # present when authenticated
+    token: Optional[str] = None  # JWT token string
+    expires_at: Optional[datetime] = None  # datetime when token expires
+
+
+class ContextContent(BaseModel):
+    """Authorized text that serves as the source of truth for responses (user-selected text OR retrieved book chunks)"""
+    type: ContextContentTypeEnum
+    content: str = Field(..., min_length=1, description="The actual text content")
+    source_document_id: str = Field(..., min_length=1, description="Identifier for the source document")
+    section_reference: Optional[str] = None  # page number, chapter, etc.
+    retrieval_metadata: Optional[Dict[str, Any]] = None  # confidence scores, relevance, etc.
+
+    class Config:
+        # This ensures the enum values are validated
+        use_enum_values = True
+
+
+class UserQuestion(BaseModel):
+    """The query submitted by the user that requires a response"""
+    id: str
+    question_text: str = Field(..., min_length=1, description="The actual question")
+    user_id: str  # identifier for the authenticated user
+    timestamp: datetime  # when the question was submitted
+    context_id: str  # reference to the associated context content
+
+
+class Response(BaseModel):
+    """The system-generated answer that must be strictly based on the provided context"""
+    id: str
+    answer_text: str  # the generated answer
+    question_id: str  # reference to the associated question
+    context_used: str  # the context that was used to generate the response
+    confidence_score: float = Field(ge=0.0, le=1.0, default=0.0)  # how confident the system is in the response
+    was_hallucinated: bool = False  # whether the response contained information not in the context
+    timestamp: datetime  # when the response was generated
+
+
+# API Request/Response Models for RAG assistant
+class RAGChatRequest(BaseModel):
+    question: str
+    context: ContextContent
+    auth_status: Optional[AuthenticationStatus] = None
+    mode: str = Field(..., regex=r"^(selection-restricted|rag-mode)$")  # "selection-restricted" | "rag-mode"
+
+
+class RAGChatResponse(BaseModel):
+    answer: str
+    status: ChatStatusEnum  # "success" | "no-content" | "unauthorized"
+    context_used: Optional[str] = None
+    timestamp: datetime
+
+
+class AuthCheckRequest(BaseModel):
+    token: str
+
+
+class AuthCheckResponse(BaseModel):
+    authenticated: bool
+    user_id: Optional[str] = None
+    message: str
