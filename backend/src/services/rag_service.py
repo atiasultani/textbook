@@ -21,30 +21,50 @@ import cohere
 from jose import JWTError, jwt
 import os
 
+# Import Gemini service
+from src.services.gemini_service import GeminiService
+
 # Initialize Cohere service
 cohere_service = CohereService()
+
+# Initialize Gemini service (will be initialized when needed)
+gemini_service = None
 
 # In-memory storage for chat sessions
 chat_sessions = {}
 
 async def generate_embeddings(text: str) -> List[float]:
-    """Generate embeddings using Cohere API"""
-    try:
-        # Create a temporary client to generate embeddings
-        api_key = settings.cohere_api_key
-        if not api_key:
-            raise ValueError("COHERE_API_KEY environment variable is required")
+    """Generate embeddings using either Cohere or Gemini API based on configuration"""
+    global gemini_service
 
-        temp_client = cohere.AsyncClient(api_key=api_key)
-        response = await temp_client.embed(
-            model=settings.embedding_model or "embed-english-v3.0",  # "embed-english-v3.0"
-            texts=[text]
-        )
-        return response.embeddings[0]
-    except Exception as e:
-        print(f"Error generating Cohere embeddings: {e}")
-        # Return zero vector of size 1024 for embedding-english-v3.0
-        return [0.0] * 1024
+    if settings.embedding_provider.lower() == "gemini":
+        # Use Gemini for embeddings
+        try:
+            if gemini_service is None:
+                gemini_service = GeminiService()
+            return await gemini_service.generate_embeddings(text)
+        except Exception as e:
+            print(f"Error generating Gemini embeddings: {e}")
+            # Return zero vector of size 768 for Gemini embeddings
+            return [0.0] * 768
+    else:
+        # Use Cohere for embeddings (original implementation with fix)
+        try:
+            api_key = settings.cohere_api_key
+            if not api_key:
+                raise ValueError("COHERE_API_KEY environment variable is required")
+
+            temp_client = cohere.AsyncClient(api_key=api_key)
+            response = await temp_client.embed(
+                model=settings.embedding_model or "embed-english-v3.0",
+                texts=[text],
+                input_type="search_document"  # Add required input_type parameter
+            )
+            return response.embeddings[0]
+        except Exception as e:
+            print(f"Error generating Cohere embeddings: {e}")
+            # Return zero vector of size 1024 for embedding-english-v3.0
+            return [0.0] * 1024
 
 async def chunk_text(text: str, chunk_size: int = 1000) -> List[dict]:
     """Split text into chunks with embeddings"""

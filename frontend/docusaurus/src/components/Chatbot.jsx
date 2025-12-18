@@ -27,7 +27,7 @@ const Chatbot = () => {
     if (authToken) {
       const initSession = async () => {
         try {
-          const response = await fetch('/api/v1/chat/start', {
+          const response = await fetch('http://localhost:8000/api/v1/chat/start', {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${authToken}`,
@@ -64,7 +64,7 @@ const Chatbot = () => {
 
   const handleLogin = async (username, password) => {
     try {
-      const response = await fetch('/token', {
+      const response = await fetch('http://localhost:8000/token', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -83,7 +83,7 @@ const Chatbot = () => {
         setShowLogin(false);
 
         // Initialize session after login
-        const sessionResponse = await fetch('/api/v1/chat/start', {
+        const sessionResponse = await fetch('http://localhost:8000/api/v1/chat/start', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -113,7 +113,7 @@ const Chatbot = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`/api/v1/chat/${sessionId}/query`, {
+      const response = await fetch(`http://localhost:8000/api/v1/chat/${sessionId}/query`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${authToken}`,

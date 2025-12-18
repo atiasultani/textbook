@@ -9,6 +9,12 @@ from src.auth.auth_handler import authenticate_user, create_access_token, Token
 from src.services.auth_service import auth_middleware
 import uvicorn
 import logging
+from fastapi import FastAPI, Depends
+from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.responses import JSONResponse
+
+
+
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -27,11 +33,12 @@ app.middleware("http")(auth_middleware)
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, configure this properly
+    allow_origins=["http://localhost:3000"],  # Docusaurus dev URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # Include API routers
 app.include_router(textbook.router, prefix=settings.api_v1_prefix, tags=["textbook"])
@@ -57,15 +64,11 @@ async def validation_exception_handler(request, exc):
     )
 
 @app.post("/token", response_model=Token, tags=["auth"])
-async def login_for_access_token(username: str, password: str):
-    """Authenticate user and return access token"""
-    user = authenticate_user(username, password)
+
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    user = authenticate_user(form_data.username, form_data.password)
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        return JSONResponse(status_code=401, content={"detail": "Invalid username or password"})
     access_token = create_access_token(data={"sub": user.username})
     return {"access_token": access_token, "token_type": "bearer"}
 
