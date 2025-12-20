@@ -1,0 +1,211 @@
+openapi: 3.0.3
+info:
+  title: RAG Book Assistant API
+  description: API for authenticated, context-locked RAG book assistant
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000/api/v1
+    description: Development server
+  - url: https://api.example.com/v1
+    description: Production server
+
+paths:
+  /chat:
+    post:
+      summary: Process user question with RAG assistant
+      description: Process authenticated user questions and return answers based only on provided context
+      operationId: processChat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+      responses:
+        '200':
+          description: Successful response from RAG assistant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+        '401':
+          description: User not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '422':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: []
+
+  /auth/verify:
+    post:
+      summary: Verify authentication status
+      description: Verify if the provided token is valid and user is authenticated
+      operationId: verifyAuth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/AuthCheckRequest'
+      responses:
+        '200':
+          description: Authentication status verified
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthCheckResponse'
+        '401':
+          description: Invalid or expired token
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    ChatRequest:
+      type: object
+      required:
+        - question
+        - context
+        - mode
+      properties:
+        question:
+          type: string
+          description: The question from the user
+          example: "What are the key principles of humanoid robotics?"
+        context:
+          $ref: '#/components/schemas/ContextContent'
+        mode:
+          type: string
+          enum: [selection-restricted, rag-mode]
+          description: Interaction mode for processing
+          example: "rag-mode"
+        auth_status:
+          type: string
+          enum: [authenticated, unauthenticated]
+          description: Authentication status of the user
+          example: "authenticated"
+
+    ContextContent:
+      type: object
+      required:
+        - type
+        - content
+        - source_document_id
+      properties:
+        type:
+          type: string
+          enum: [user-selected, retrieved-excerpt]
+          description: Type of context content
+          example: "retrieved-excerpt"
+        content:
+          type: string
+          description: The actual text content to use as context
+          example: "Humanoid robotics involves creating robots with human-like characteristics..."
+        source_document_id:
+          type: string
+          description: Identifier for the source document
+          example: "intro-to-humanoid-robotics-chapter-1"
+        section_reference:
+          type: string
+          description: Reference to the specific section in the document
+          example: "page-15"
+        retrieval_metadata:
+          type: object
+          description: Metadata about how the content was retrieved
+          additionalProperties: true
+
+    ChatResponse:
+      type: object
+      required:
+        - answer
+        - status
+        - timestamp
+      properties:
+        answer:
+          type: string
+          description: The answer from the RAG assistant
+          example: "Based on the provided text, the key principles of humanoid robotics include..."
+        status:
+          type: string
+          enum: [success, no-content, unauthorized]
+          description: Status of the response
+          example: "success"
+        context_used:
+          type: string
+          description: The context that was used to generate the response
+          example: "intro-to-humanoid-robotics-chapter-1"
+        timestamp:
+          type: string
+          format: date-time
+          description: When the response was generated
+          example: "2025-12-15T10:30:00Z"
+
+    UnauthorizedResponse:
+      type: object
+      required:
+        - message
+        - status
+      properties:
+        message:
+          type: string
+          description: The unauthorized message
+          example: "Please sign in or create an account to use the chatbot."
+        status:
+          type: string
+          enum: [unauthorized]
+          description: Status indicating unauthorized access
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          description: Error type
+          example: "validation_error"
+        message:
+          type: string
+          description: Error message
+          example: "Invalid request parameters"
+
+    AuthCheckRequest:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          type: string
+          description: JWT token to verify
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+    AuthCheckResponse:
+      type: object
+      required:
+        - authenticated
+        - message
+      properties:
+        authenticated:
+          type: boolean
+          description: Whether the user is authenticated
+          example: true
+        user_id:
+          type: string
+          description: User ID if authenticated
+          example: "user-12345"
+        message:
+          type: string
+          description: Status message
+          example: "Authentication successful"

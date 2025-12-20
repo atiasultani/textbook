@@ -16,6 +16,10 @@ class Settings(BaseSettings):
     cohere_api_key: str = os.getenv("COHERE_API_KEY", "")
     embedding_model: str = os.getenv("EMBEDDING_MODEL", "")
 
+    # Gemini settings
+    gemini_api_key: str = os.getenv("GEMINI_API_KEY", "")
+    embedding_provider: str = os.getenv("EMBEDDING_PROVIDER", "cohere")  # cohere or gemini
+
     # Authentication settings
     secret_key: str = os.getenv("SECRET_KEY", "your-secret-key-change-in-production")
     algorithm: str = os.getenv("ALGORITHM", "HS256")
