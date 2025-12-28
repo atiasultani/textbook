@@ -1,0 +1,145 @@
+.module-navigation-container {
+  margin: 1rem 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.module-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  min-width: max-content;
+}
+
+.module-button-wrapper {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.module-button {
+  background-color: #f0f8ff;
+  border: 2px solid #25c2a0;
+  border-radius: 8px;
+  color: #25c2a0;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  white-space: nowrap;
+  min-width: 200px;
+  text-align: center;
+}
+
+.module-button:hover {
+  background-color: #e6f7f3;
+  transform: translateY(-2px);
+}
+
+.module-button.active {
+  background-color: #25c2a0;
+  color: white;
+}
+
+.module-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 250px;
+  margin-top: 0.25rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.module-chapters-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0;
+}
+
+.module-chapter-item {
+  margin: 0;
+  padding: 0;
+}
+
+.module-chapter-link {
+  display: block;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  color: #333;
+  transition: background-color 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.module-chapter-link:hover {
+  background-color: #f5f5f5;
+  border-left-color: #25c2a0;
+}
+
+.module-chapter-link.active {
+  background-color: #e6f7f3;
+  color: #25c2a0;
+  font-weight: 600;
+  border-left-color: #25c2a0;
+}
+
+/* Responsive design */
+@media (max-width: 992px) {
+  .module-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .module-button-wrapper {
+    width: 100%;
+  }
+
+  .module-button {
+    width: 100%;
+    min-width: auto;
+    text-align: left;
+  }
+
+  .module-dropdown {
+    position: static;
+    margin-top: 0.25rem;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .module-button {
+    padding: 0.65rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .module-chapter-link {
+    padding: 0.65rem 0.75rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .module-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    min-width: 150px;
+  }
+
+  .module-chapter-link {
+    padding: 0.5rem 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .module-dropdown {
+    min-width: 200px;
+  }
+}

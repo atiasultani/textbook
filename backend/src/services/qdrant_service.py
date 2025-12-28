@@ -18,24 +18,50 @@ if settings.qdrant_api_key:
 else:
     client = QdrantClient(host="localhost", port=6333)
 
-COLLECTION_NAME = "textbook_embeddings"
+
+def get_embedding_size():
+    """Get the expected embedding size based on the configured provider"""
+    if settings.embedding_provider.lower() == "gemini":
+        return 768  # Gemini embedding size
+    elif settings.embedding_provider.lower() == "cohere":
+        return 1024  # Cohere embed-english-v3.0 size
+    else:
+        # Default to 1536 to maintain backward compatibility with existing setup
+        return 1536
+
+def get_collection_name():
+    """Get the appropriate collection name based on embedding provider to avoid dimension conflicts"""
+    size = get_embedding_size()
+    if size == 768:
+        return "textbook_embeddings_gemini"
+    elif size == 1024:
+        return "textbook_embeddings_cohere"
+    else:
+        return "textbook_embeddings"  # Original collection name
 
 async def create_collection():
     """Create the embeddings collection in Qdrant if it doesn't exist"""
+    collection_name = get_collection_name()
+    expected_size = get_embedding_size()
     try:
-        client.get_collection(COLLECTION_NAME)
-        logger.info(f"Collection {COLLECTION_NAME} already exists")
+        collection_info = client.get_collection(collection_name)
+        # Check if the existing collection has the correct vector size
+        if collection_info.config.params.vectors.size != expected_size:
+            logger.warning(f"Collection {collection_name} exists but has wrong dimension ({collection_info.config.params.vectors.size}), expected {expected_size}. This may cause issues.")
+        else:
+            logger.info(f"Collection {collection_name} already exists with correct dimension {expected_size}")
     except:
         # Collection doesn't exist, create it
         client.create_collection(
-            collection_name=COLLECTION_NAME,
-            vectors_config=models.VectorParams(size=1536, distance=models.Distance.COSINE),  # OpenAI ada-002 embedding size
+            collection_name=collection_name,
+            vectors_config=models.VectorParams(size=expected_size, distance=models.Distance.COSINE),  # Embedding size
         )
-        logger.info(f"Created collection {COLLECTION_NAME}")
+        logger.info(f"Created collection {collection_name} with dimension {expected_size}")
 
 
 async def store_embeddings(chapter_id: str, content_chunks: List[dict]):
     """Store embeddings for a chapter in Qdrant"""
+    collection_name = get_collection_name()
     points = []
     for i, chunk in enumerate(content_chunks):
         point = models.PointStruct(
@@ -50,15 +76,16 @@ async def store_embeddings(chapter_id: str, content_chunks: List[dict]):
         points.append(point)
 
     client.upsert(
-        collection_name=COLLECTION_NAME,
+        collection_name=collection_name,
         points=points
     )
 
 
 async def search_embeddings(query_embedding: List[float], top_k: int = 5) -> List[dict]:
     """Search for similar embeddings in Qdrant"""
+    collection_name = get_collection_name()
     search_results = client.search(
-        collection_name=COLLECTION_NAME,
+        collection_name=collection_name,
         query_vector=query_embedding,
         limit=top_k,
     )
@@ -76,8 +103,9 @@ async def search_embeddings(query_embedding: List[float], top_k: int = 5) -> Lis
 
 async def get_all_embeddings(chapter_id: str) -> List[dict]:
     """Get all embeddings for a specific chapter"""
+    collection_name = get_collection_name()
     scroll_result = client.scroll(
-        collection_name=COLLECTION_NAME,
+        collection_name=collection_name,
         scroll_filter=models.Filter(
             must=[
                 models.FieldCondition(

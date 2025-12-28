@@ -3,6 +3,10 @@ sidebar_position: 6
 title: "Chapter 6: Capstone - Simple AI-Robot Pipeline"
 ---
 
+import ModuleNavigation from '@site/src/components/ModuleNavigation';
+
+<ModuleNavigation />
+
 # Chapter 6: Capstone - Simple AI-Robot Pipeline
 
 This capstone project integrates all concepts learned in previous chapters to build a complete AI-robot pipeline that demonstrates the principles of Physical AI in action.

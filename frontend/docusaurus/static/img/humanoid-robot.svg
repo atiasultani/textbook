@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250">
+  <!-- Robot head -->
+  <circle cx="100" cy="50" r="30" fill="#4F46E5" stroke="#6366F1" stroke-width="2"/>
+
+  <!-- Robot face details -->
+  <circle cx="85" cy="45" r="4" fill="#10B981"/> <!-- Left eye -->
+  <circle cx="115" cy="45" r="4" fill="#10B981"/> <!-- Right eye -->
+  <path d="M 85 70 Q 100 80 115 70" stroke="#EC4899" stroke-width="2" fill="none"/> <!-- Smile -->
+
+  <!-- Robot antenna -->
+  <line x1="100" y1="20" x2="100" y2="10" stroke="#6366F1" stroke-width="2"/>
+  <circle cx="100" cy="7" r="3" fill="#F59E0B"/>
+
+  <!-- Robot body -->
+  <rect x="70" y="80" width="60" height="80" rx="15" fill="#4F46E5" stroke="#6366F1" stroke-width="2"/>
+
+  <!-- Chest panel -->
+  <rect x="85" y="95" width="30" height="25" rx="5" fill="#1E293B" stroke="#64748B" stroke-width="1"/>
+  <circle cx="100" cy="110" r="3" fill="#10B981"/> <!-- Status light -->
+
+  <!-- Robot arms -->
+  <line x1="70" y1="100" x2="40" y2="120" stroke="#6366F1" stroke-width="8" stroke-linecap="round"/>
+  <line x1="70" y1="140" x2="35" y2="150" stroke="#6366F1" stroke-width="8" stroke-linecap="round"/>
+  <line x1="130" y1="100" x2="160" y2="120" stroke="#6366F1" stroke-width="8" stroke-linecap="round"/>
+  <line x1="130" y1="140" x2="165" y2="150" stroke="#6366F1" stroke-width="8" stroke-linecap="round"/>
+
+  <!-- Robot hands -->
+  <circle cx="35" cy="150" r="6" fill="#6366F1"/>
+  <circle cx="40" cy="120" r="6" fill="#6366F1"/>
+  <circle cx="160" cy="120" r="6" fill="#6366F1"/>
+  <circle cx="165" cy="150" r="6" fill="#6366F1"/>
+
+  <!-- Robot legs -->
+  <line x1="85" y1="160" x2="85" y2="200" stroke="#6366F1" stroke-width="8" stroke-linecap="round"/>
+  <line x1="115" y1="160" x2="115" y2="200" stroke="#6366F1" stroke-width="8" stroke-linecap="round"/>
+
+  <!-- Robot feet -->
+  <rect x="75" y="200" width="20" height="10" rx="3" fill="#6366F1"/>
+  <rect x="105" y="200" width="20" height="10" rx="3" fill="#6366F1"/>
+
+  <!-- Decorative elements -->
+  <circle cx="90" cy="130" r="4" fill="#F59E0B"/>
+  <circle cx="110" cy="130" r="4" fill="#F59E0B"/>
+  <rect x="92" y="145" width="16" height="3" rx="1" fill="#EC4899"/>
+</svg>

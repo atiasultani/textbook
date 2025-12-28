@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python test_auth_system.py)",
+      "Bash(python3 test_auth_system.py)",
+      "Bash(.specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks)"
+    ]
+  }
+}

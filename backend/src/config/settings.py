@@ -16,6 +16,10 @@ class Settings(BaseSettings):
     cohere_api_key: str = os.getenv("COHERE_API_KEY", "")
     embedding_model: str = os.getenv("EMBEDDING_MODEL", "")
 
+    # Gemini settings
+    gemini_api_key: str = os.getenv("GEMINI_API_KEY", "")
+    embedding_provider: str = os.getenv("EMBEDDING_PROVIDER", "cohere")  # cohere or gemini
+
     # Authentication settings
     secret_key: str = os.getenv("SECRET_KEY", "your-secret-key-change-in-production")
     algorithm: str = os.getenv("ALGORITHM", "HS256")
@@ -26,8 +30,13 @@ class Settings(BaseSettings):
     debug: bool = os.getenv("DEBUG", "False").lower() == "true"
     api_v1_prefix: str = "/api/v1"
 
+    #Auth settings
+    VITE_NEON_AUTH_URL: str | None = os.getenv("VITE_NEON_AUTH_URL")
+    DATABASE_URL: str=os.getenv("DATABASE_URL")
+    JWT_SECRET: str=os.getenv("JWT_SECRET")
+
     class Config:
         env_file = ".env"
-
-
+        env_file_encoding = "utf-8"
+        
 settings = Settings()

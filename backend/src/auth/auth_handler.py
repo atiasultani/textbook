@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from typing import Optional
-import jwt
+from jose import jwt, JWTError
 from fastapi import HTTPException, status, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel

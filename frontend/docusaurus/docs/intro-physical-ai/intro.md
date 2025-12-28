@@ -3,6 +3,10 @@ sidebar_position: 1
 title: "Chapter 1: Introduction to Physical AI"
 ---
 
+import ModuleNavigation from '@site/src/components/ModuleNavigation';
+
+<ModuleNavigation />
+
 # Chapter 1: Introduction to Physical AI
 
 Physical AI is an interdisciplinary field that combines robotics, machine learning, and physics to create intelligent systems that can interact with the physical world. Unlike traditional AI that operates primarily in digital spaces, Physical AI focuses on embodied intelligence that can perceive, reason, and act in physical environments.

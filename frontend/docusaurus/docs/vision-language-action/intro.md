@@ -3,6 +3,10 @@ sidebar_position: 5
 title: "Chapter 5: Vision-Language-Action Systems"
 ---
 
+import ModuleNavigation from '@site/src/components/ModuleNavigation';
+
+<ModuleNavigation />
+
 # Chapter 5: Vision-Language-Action Systems
 
 Vision-Language-Action systems integrate visual perception, natural language understanding, and physical action to create robots that can understand and respond to human commands in natural language.

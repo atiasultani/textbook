@@ -13,7 +13,6 @@ const config = {
 
   onBrokenLinks: 'throw',
 
-  // 🔥 Updated markdown config to fix the warning
   markdown: {},
 
   i18n: {
@@ -21,10 +20,25 @@ const config = {
     locales: ['en'],
   },
 
+  themes: [],
+
+  plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        fromExtensions: ['html'],
+        redirects: [],
+      },
+    ],
+  ],
+
+  // ⚠️ Docusaurus v3 DOES NOT allow devMiddleware / webpack headers
+  // Use a proxy or backend CORS instead
+
   presets: [
     [
       'classic',
-      ({
+      {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl:
@@ -33,64 +47,91 @@ const config = {
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
-      }),
+      },
     ],
   ],
 
-  themeConfig: ({
-      image: 'img/docusaurus-social-card.jpg',
-      navbar: {
-        title: 'Physical AI & Robotics Textbook',
-        logo: {
-          alt: 'Textbook Logo',
-          src: 'img/logo.svg',
-        },
-        items: [
-          {
-            type: 'docSidebar',
-            sidebarId: 'tutorialSidebar',
-            position: 'left',
-            label: 'Textbook',
-          },
-          {
-            href: 'https://github.com/your-organization/textbook',
-            label: 'GitHub',
-            position: 'right',
-          },
-        ],
-      },
-      footer: {
-        style: 'dark',
-        links: [
-          {
-            title: 'Chapters',
-            items: [
-              { label: 'Introduction to Physical AI', to: '/docs/intro-physical-ai/intro' },
-              { label: 'Basics of Humanoid Robotics', to: '/docs/basics-humanoid-robotics/intro' },
-              { label: 'ROS 2 Fundamentals', to: '/docs/ros-2-fundamentals/intro' },
-              { label: 'Digital Twin Simulation', to: '/docs/digital-twin-simulation/intro' },
-              { label: 'Vision-Language-Action Systems', to: '/docs/vision-language-action/intro' },
-              { label: 'Capstone', to: '/docs/capstone/intro' },
-            ],
-          },
-          {
-            title: 'More',
-            items: [
-              {
-                label: 'GitHub',
-                href: 'https://github.com/your-organization/textbook',
-              },
-            ],
-          },
-        ],
-        copyright: `Copyright © ${new Date().getFullYear()} Physical AI & Humanoid Robotics Textbook. Built with Docusaurus.`,
-      },
+  themeConfig: {
+    image: 'img/docusaurus-social-card.jpg',
 
-      prism: {
-        theme: require("prism-react-renderer").themes.github,
-        darkTheme: require("prism-react-renderer").themes.dracula,
+    navbar: {
+      title: 'Physical AI & Robotics Textbook',
+      logo: {
+        alt: 'Physical AI Robot Logo',
+        src: 'img/robot-cover.svg',
       },
-  }),
+      items: [
+        {
+          type: 'docSidebar',
+          sidebarId: 'tutorialSidebar',
+          position: 'left',
+          label: 'Textbook',
+        },
+        {
+          type: 'dropdown',
+          label: 'Modules',
+          position: 'left',
+          items: [
+            {
+              label: 'Module 1: Introduction to Physical AI',
+              to: '/docs/intro-physical-ai/intro',
+            },
+            {
+              label: 'Module 2: Humanoid Robotics Fundamentals',
+              to: '/docs/basics-humanoid-robotics/intro',
+            },
+            {
+              label: 'Module 3: Advanced Systems',
+              to: '/docs/digital-twin-simulation/intro',
+            },
+            {
+              label: 'Module 4: Capstone Project',
+              to: '/docs/capstone/intro',
+            },
+          ],
+        },
+        {
+          href: 'https://github.com/your-organization/textbook',
+          label: 'GitHub',
+          position: 'right',
+        },
+      ],
+    },
+
+    footer: {
+      style: 'dark',
+      links: [
+        {
+          title: 'Modules',
+          items: [
+            { label: 'Module 1: Introduction to Physical AI', to: '/docs/intro-physical-ai/intro' },
+            { label: 'Module 2: Humanoid Robotics Fundamentals', to: '/docs/basics-humanoid-robotics/intro' },
+            { label: 'Module 3: Advanced Systems', to: '/docs/digital-twin-simulation/intro' },
+            { label: 'Module 4: Capstone Project', to: '/docs/capstone/intro' },
+          ],
+        },
+        {
+          title: 'Resources',
+          items: [
+            {
+              label: 'GitHub',
+              href: 'https://github.com/your-organization/textbook',
+            },
+            {
+              label: 'Physical AI Community',
+              href: 'https://example.com/physical-ai-community',
+            },
+          ],
+        },
+      ],
+      copyright: `Copyright © ${new Date().getFullYear()} Physical AI & Humanoid Robotics Textbook. Built with Docusaurus.`,
+    },
+
+    prism: {
+      theme: require('prism-react-renderer').themes.github,
+      darkTheme: require('prism-react-renderer').themes.dracula,
+    },
+  },
 };
 
 module.exports = config;

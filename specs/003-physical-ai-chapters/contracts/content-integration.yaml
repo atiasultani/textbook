@@ -1,0 +1,165 @@
+# Content Integration Contract for Physical AI Chapters
+
+openapi: 3.0.0
+info:
+  title: Physical AI Textbook Content Integration
+  description: Contract for integrating 3 new Physical AI chapters with existing textbook
+  version: 1.0.0
+
+paths: {}
+
+components:
+  schemas:
+    Chapter:
+      type: object
+      required:
+        - id
+        - title
+        - content
+        - examples
+        - questions_answers
+        - exercises
+        - activities
+        - learning_objectives
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the chapter
+          example: "physical-ai-foundations"
+        title:
+          type: string
+          description: Title of the chapter
+          example: "Foundations of Physical AI"
+        content:
+          type: string
+          description: Main content in Markdown format
+        examples:
+          type: array
+          items:
+            $ref: '#/components/schemas/Example'
+        questions_answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuestionAnswer'
+        exercises:
+          type: array
+          items:
+            $ref: '#/components/schemas/Exercise'
+        activities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Activity'
+        learning_objectives:
+          type: array
+          items:
+            type: string
+          description: List of learning objectives for the chapter
+        summary:
+          type: string
+          description: Chapter summary
+
+    Example:
+      type: object
+      required:
+        - title
+        - scenario
+        - problem
+        - solution
+      properties:
+        title:
+          type: string
+          description: Title of the example
+        scenario:
+          type: string
+          description: Real-world context for the example
+        problem:
+          type: string
+          description: Problem statement
+        solution:
+          type: string
+          description: Solution approach and explanation
+
+    QuestionAnswer:
+      type: object
+      required:
+        - question
+        - answer
+        - difficulty_level
+      properties:
+        question:
+          type: string
+          description: The question text
+        answer:
+          type: string
+          description: The answer text
+        difficulty_level:
+          type: string
+          enum: [Basic, Intermediate, Advanced]
+          description: Difficulty level of the question
+
+    Exercise:
+      type: object
+      required:
+        - title
+        - description
+        - instructions
+        - expected_outcome
+      properties:
+        title:
+          type: string
+          description: Title of the exercise
+        description:
+          type: string
+          description: Brief description of the exercise
+        instructions:
+          type: string
+          description: Step-by-step instructions
+        expected_outcome:
+          type: string
+          description: What the student should achieve
+        estimated_time:
+          type: integer
+          description: Estimated time to complete in minutes
+
+    Activity:
+      type: object
+      required:
+        - title
+        - description
+        - instructions
+        - expected_outcome
+        - duration
+      properties:
+        title:
+          type: string
+          description: Title of the hands-on activity
+        description:
+          type: string
+          description: Brief description of the activity
+        materials_needed:
+          type: array
+          items:
+            type: string
+          description: List of materials needed for the activity
+        instructions:
+          type: string
+          description: Step-by-step instructions for the activity
+        expected_outcome:
+          type: string
+          description: What the student should achieve
+        duration:
+          type: integer
+          description: Duration of the activity in minutes
+        prerequisites:
+          type: array
+          items:
+            type: string
+          description: Prerequisites for the activity
+
+# Integration requirements with existing textbook
+integration_requirements:
+  - All content must follow Docusaurus MDX format
+  - Chapters must be added to sidebar configuration
+  - Content must be compatible with existing RAG system
+  - Visual assets must be properly referenced and optimized
+  - All content must adhere to project constitution principles

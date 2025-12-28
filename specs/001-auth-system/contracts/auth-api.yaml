@@ -1,0 +1,221 @@
+# Authentication API Contract
+
+This document defines the API contract for the authentication system, based on the functional requirements in the specification.
+
+## Base URL
+`https://api.yourdomain.com/v1/auth`
+
+## Authentication
+Most endpoints require a valid JWT token in the header:
+```
+Authorization: Bearer {access_token}
+```
+
+## Endpoints
+
+### POST /auth/register
+Register a new user account
+
+**Request:**
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "SecurePassword123"
+}
+```
+
+**Response:**
+```json
+{
+  "user_id": "user_1234567890",
+  "email": "john@example.com",
+  "name": "John Doe",
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "refresh_token": "refresh_token_hash",
+  "expires_in": 3600,
+  "token_type": "bearer"
+}
+```
+
+### POST /auth/login
+Authenticate a user and return tokens
+
+**Request:**
+```json
+{
+  "email": "john@example.com",
+  "password": "SecurePassword123",
+  "remember_me": false
+}
+```
+
+**Response:**
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "refresh_token": "refresh_token_hash",
+  "expires_in": 3600,
+  "token_type": "bearer",
+  "user": {
+    "id": "user_1234567890",
+    "email": "john@example.com",
+    "name": "John Doe"
+  }
+}
+```
+
+### POST /auth/refresh
+Refresh an expired access token
+
+**Request:**
+```json
+{
+  "refresh_token": "refresh_token_hash"
+}
+```
+
+**Response:**
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "expires_in": 3600,
+  "token_type": "bearer"
+}
+```
+
+### POST /auth/logout
+Invalidate the current session
+
+**Headers:**
+```
+Authorization: Bearer {access_token}
+```
+
+**Response:**
+```json
+{
+  "message": "Successfully logged out"
+}
+```
+
+### POST /auth/forgot-password
+Request password reset email
+
+**Request:**
+```json
+{
+  "email": "john@example.com"
+}
+```
+
+**Response:**
+```json
+{
+  "message": "Password reset email sent if account exists"
+}
+```
+
+### POST /auth/reset-password
+Reset password with token
+
+**Request:**
+```json
+{
+  "token": "reset_token_hash",
+  "new_password": "NewSecurePassword123"
+}
+```
+
+**Response:**
+```json
+{
+  "message": "Password has been reset successfully"
+}
+```
+
+### GET /auth/me
+Get current user information
+
+**Headers:**
+```
+Authorization: Bearer {access_token}
+```
+
+**Response:**
+```json
+{
+  "id": "user_1234567890",
+  "email": "john@example.com",
+  "name": "John Doe",
+  "is_verified": true,
+  "created_at": "2025-12-23T10:00:00Z"
+}
+```
+
+### POST /auth/oauth/{provider}/callback
+Handle OAuth callback for social login
+
+**Request:** (Handled by OAuth provider redirect)
+```
+POST /auth/oauth/google/callback?code=oauth_code
+POST /auth/oauth/github/callback?code=oauth_code
+```
+
+**Response:**
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "refresh_token": "refresh_token_hash",
+  "expires_in": 3600,
+  "token_type": "bearer",
+  "user": {
+    "id": "user_1234567890",
+    "email": "john@example.com",
+    "name": "John Doe",
+    "provider": "google"
+  }
+}
+```
+
+### POST /auth/oauth/{provider}/login
+Initiate OAuth login flow
+
+**Response:**
+```json
+{
+  "authorization_url": "https://accounts.google.com/o/oauth2/auth?..."
+}
+```
+
+## Error Responses
+
+All error responses follow this format:
+```json
+{
+  "error": {
+    "code": "ERROR_CODE",
+    "message": "Human-readable error message",
+    "details": "Additional error details if applicable"
+  }
+}
+```
+
+### Common Error Codes
+- `INVALID_CREDENTIALS`: Provided email/password combination is incorrect
+- `USER_NOT_FOUND`: No user exists with the provided email
+- `USER_INACTIVE`: Account has been deactivated
+- `TOKEN_EXPIRED`: JWT token has expired
+- `INVALID_TOKEN`: JWT token is invalid or malformed
+- `RATE_LIMIT_EXCEEDED`: Too many requests in a short time period
+- `EMAIL_NOT_VERIFIED`: User hasn't verified their email yet
+- `ACCOUNT_LOCKED`: Account has been locked due to failed attempts
+- `VALIDATION_ERROR`: Request data doesn't meet validation requirements
+- `INTERNAL_ERROR`: An unexpected server error occurred
+
+## Security Headers
+All authentication endpoints must include appropriate security headers:
+- `X-Content-Type-Options: nosniff`
+- `X-Frame-Options: DENY`
+- `X-XSS-Protection: 1; mode=block`
+- `Strict-Transport-Security: max-age=31536000; includeSubDomains`

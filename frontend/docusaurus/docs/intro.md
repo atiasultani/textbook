@@ -7,6 +7,10 @@ title: Introduction
 
 This interactive textbook covers the fundamentals of Physical AI and Humanoid Robotics with an integrated RAG-powered chatbot to help answer your questions.
 
+import ModuleNavigation from '@site/src/components/ModuleNavigation';
+
+<ModuleNavigation />
+
 ## What You'll Learn
 
 - Introduction to Physical AI

@@ -1,0 +1,159 @@
+# Chat API Contract
+
+This document defines the API contract for the chatbot functionality, based on the functional requirements in the specification.
+
+## Base URL
+`https://api.yourdomain.com/v1/chat`
+
+## Authentication
+All endpoints require a valid API key in the header:
+```
+Authorization: Bearer {api_key}
+```
+
+## Endpoints
+
+### POST /chat/start
+Start a new conversation
+
+**Request:**
+```json
+{
+  "context": "textbook-chapter-1",
+  "user_preferences": {
+    "response_style": "professional",
+    "language": "en"
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "conversation_id": "conv_1234567890",
+  "created_at": "2025-12-23T10:00:00Z",
+  "status": "active"
+}
+```
+
+### POST /chat/{conversation_id}/message
+Send a message in an existing conversation
+
+**Request:**
+```json
+{
+  "message": "What is Physical AI?",
+  "timestamp": "2025-12-23T10:00:00Z"
+}
+```
+
+**Response:**
+```json
+{
+  "message_id": "msg_1234567890",
+  "conversation_id": "conv_1234567890",
+  "sender": "bot",
+  "content": "Physical AI combines artificial intelligence with physical systems...",
+  "timestamp": "2025-12-23T10:00:02Z",
+  "type": "text",
+  "metadata": {}
+}
+```
+
+### GET /chat/{conversation_id}/history
+Get conversation history
+
+**Response:**
+```json
+{
+  "conversation_id": "conv_1234567890",
+  "messages": [
+    {
+      "message_id": "msg_1234567890",
+      "sender": "user",
+      "content": "What is Physical AI?",
+      "timestamp": "2025-12-23T10:00:00Z",
+      "status": "delivered"
+    },
+    {
+      "message_id": "msg_1234567891",
+      "sender": "bot",
+      "content": "Physical AI combines artificial intelligence with physical systems...",
+      "timestamp": "2025-12-23T10:00:02Z",
+      "type": "text",
+      "status": "delivered"
+    }
+  ]
+}
+```
+
+### GET /chat/{conversation_id}/typing
+Check if bot is typing (for typing indicators)
+
+**Response:**
+```json
+{
+  "conversation_id": "conv_1234567890",
+  "is_typing": true,
+  "last_activity": "2025-12-23T10:00:01Z"
+}
+```
+
+### POST /chat/{conversation_id}/context
+Update conversation context
+
+**Request:**
+```json
+{
+  "context": {
+    "current_topic": "ROS 2 Fundamentals",
+    "previous_questions": ["What is ROS 2?", "How does it differ from ROS 1?"]
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "conversation_id": "conv_1234567890",
+  "context": {
+    "current_topic": "ROS 2 Fundamentals",
+    "previous_questions": ["What is ROS 2?", "How does it differ from ROS 1?"]
+  },
+  "updated_at": "2025-12-23T10:00:05Z"
+}
+```
+
+## Error Responses
+
+All error responses follow this format:
+```json
+{
+  "error": {
+    "code": "ERROR_CODE",
+    "message": "Human-readable error message",
+    "details": "Additional error details if applicable"
+  }
+}
+```
+
+### Common Error Codes
+- `INVALID_REQUEST`: Request data is malformed or missing required fields
+- `CONVERSATION_NOT_FOUND`: Specified conversation ID does not exist
+- `RATE_LIMIT_EXCEEDED`: Too many requests in a short time period
+- `BACKEND_SERVICE_UNAVAILABLE`: Backend service is temporarily unavailable
+- `AUTHENTICATION_FAILED`: Invalid or missing API key
+
+## Websocket Connection
+For real-time updates (typing indicators, streaming responses):
+
+`wss://api.yourdomain.com/v1/chat/{conversation_id}/websocket`
+
+Messages format:
+```json
+{
+  "type": "typing_start|typing_end|message_chunk|message_complete",
+  "data": { /* message data */ },
+  "timestamp": "2025-12-23T10:00:01Z"
+}
+```
