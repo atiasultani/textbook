@@ -6,7 +6,7 @@ from src.config.settings import settings
 from src.api.v1 import textbook, chat, search, cohere
 from src.api.v1.auth import router as auth_router
 from src.auth.auth_handler import authenticate_user, create_access_token, Token
-from src.services.auth_service import auth_middleware
+from src.auth.middleware import auth_middleware
 import uvicorn
 import logging
 from fastapi import FastAPI, Depends

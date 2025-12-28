@@ -3,6 +3,10 @@ sidebar_position: 2
 title: "Chapter 2: Basics of Humanoid Robotics"
 ---
 
+import ModuleNavigation from '@site/src/components/ModuleNavigation';
+
+<ModuleNavigation />
+
 # Chapter 2: Basics of Humanoid Robotics
 
 Humanoid robots are robots with human-like features and capabilities. They are designed to mimic human appearance and behavior, making them ideal for human-robot interaction and tasks that require human-like dexterity and mobility.

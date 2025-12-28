@@ -57,8 +57,8 @@ const config = {
     navbar: {
       title: 'Physical AI & Robotics Textbook',
       logo: {
-        alt: 'Textbook Logo',
-        src: 'img/logo.svg',
+        alt: 'Physical AI Robot Logo',
+        src: 'img/robot-cover.svg',
       },
       items: [
         {
@@ -66,6 +66,29 @@ const config = {
           sidebarId: 'tutorialSidebar',
           position: 'left',
           label: 'Textbook',
+        },
+        {
+          type: 'dropdown',
+          label: 'Modules',
+          position: 'left',
+          items: [
+            {
+              label: 'Module 1: Introduction to Physical AI',
+              to: '/docs/intro-physical-ai/intro',
+            },
+            {
+              label: 'Module 2: Humanoid Robotics Fundamentals',
+              to: '/docs/basics-humanoid-robotics/intro',
+            },
+            {
+              label: 'Module 3: Advanced Systems',
+              to: '/docs/digital-twin-simulation/intro',
+            },
+            {
+              label: 'Module 4: Capstone Project',
+              to: '/docs/capstone/intro',
+            },
+          ],
         },
         {
           href: 'https://github.com/your-organization/textbook',
@@ -79,22 +102,24 @@ const config = {
       style: 'dark',
       links: [
         {
-          title: 'Chapters',
+          title: 'Modules',
           items: [
-            { label: 'Introduction to Physical AI', to: '/docs/intro-physical-ai/intro' },
-            { label: 'Basics of Humanoid Robotics', to: '/docs/basics-humanoid-robotics/intro' },
-            { label: 'ROS 2 Fundamentals', to: '/docs/ros-2-fundamentals/intro' },
-            { label: 'Digital Twin Simulation', to: '/docs/digital-twin-simulation/intro' },
-            { label: 'Vision-Language-Action Systems', to: '/docs/vision-language-action/intro' },
-            { label: 'Capstone', to: '/docs/capstone/intro' },
+            { label: 'Module 1: Introduction to Physical AI', to: '/docs/intro-physical-ai/intro' },
+            { label: 'Module 2: Humanoid Robotics Fundamentals', to: '/docs/basics-humanoid-robotics/intro' },
+            { label: 'Module 3: Advanced Systems', to: '/docs/digital-twin-simulation/intro' },
+            { label: 'Module 4: Capstone Project', to: '/docs/capstone/intro' },
           ],
         },
         {
-          title: 'More',
+          title: 'Resources',
           items: [
             {
               label: 'GitHub',
               href: 'https://github.com/your-organization/textbook',
+            },
+            {
+              label: 'Physical AI Community',
+              href: 'https://example.com/physical-ai-community',
             },
           ],
         },

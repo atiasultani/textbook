@@ -3,6 +3,10 @@ sidebar_position: 4
 title: "Chapter 4: Digital Twin Simulation (Gazebo + Isaac)"
 ---
 
+import ModuleNavigation from '@site/src/components/ModuleNavigation';
+
+<ModuleNavigation />
+
 # Chapter 4: Digital Twin Simulation (Gazebo + Isaac)
 
 Digital twin simulation involves creating a virtual replica of a physical system. This allows for testing, validation, and optimization of robotic systems in a safe virtual environment before deployment in the real world.

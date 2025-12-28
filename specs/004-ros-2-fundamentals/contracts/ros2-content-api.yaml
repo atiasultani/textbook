@@ -1,0 +1,90 @@
+openapi: 3.0.0
+info:
+  title: ROS 2 Fundamentals Content API
+  description: API for accessing ROS 2 fundamentals educational content
+  version: 1.0.0
+paths:
+  /chapters:
+    get:
+      summary: List all ROS 2 fundamentals chapters
+      responses:
+        '200':
+          description: List of chapters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Chapter'
+  /chapters/{id}:
+    get:
+      summary: Get a specific chapter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Chapter content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chapter'
+        '404':
+          description: Chapter not found
+  /chapters/{id}/exercises:
+    get:
+      summary: Get exercises for a specific chapter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of exercises
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Exercise'
+components:
+  schemas:
+    Chapter:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        learning_objectives:
+          type: array
+          items:
+            type: string
+        length_pages:
+          type: integer
+        difficulty_level:
+          type: string
+          enum: [beginner, intermediate, advanced]
+    Exercise:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        steps:
+          type: array
+          items:
+            type: string
+        difficulty:
+          type: string
+          enum: [easy, medium, hard]

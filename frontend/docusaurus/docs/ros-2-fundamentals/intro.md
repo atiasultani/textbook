@@ -3,6 +3,10 @@ sidebar_position: 3
 title: "Chapter 3: ROS 2 Fundamentals"
 ---
 
+import ModuleNavigation from '@site/src/components/ModuleNavigation';
+
+<ModuleNavigation />
+
 # Chapter 3: ROS 2 Fundamentals
 
 ROS 2 (Robot Operating System 2) is a flexible framework for writing robot software. It is a collection of tools, libraries, and conventions that aim to simplify the task of creating complex and robust robot behavior.

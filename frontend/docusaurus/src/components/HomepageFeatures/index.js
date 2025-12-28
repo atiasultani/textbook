@@ -4,32 +4,29 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
+    title: 'Physical AI Fundamentals',
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Learn the core principles of Physical AI, from perception to action, and understand how AI systems interact with the physical world.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: 'Humanoid Robotics',
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Explore advanced robotics concepts, including locomotion, manipulation, and control systems for humanoid robots.
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    title: 'Interactive Learning',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Engage with our RAG-powered chatbot for personalized learning experiences and instant answers to your questions.
       </>
     ),
   },
@@ -42,8 +39,8 @@ function Feature({Svg, title, description}) {
         <Svg className={styles.featureSvg} role="img" />
       </div>
       <div className="text--center padding-horiz--md">
-        <Heading as="h3">{title}</Heading>
-        <p>{description}</p>
+        <Heading as="h3" className={styles.featureTitle}>{title}</Heading>
+        <p className={styles.featureDescription}>{description}</p>
       </div>
     </div>
   );
@@ -51,7 +48,7 @@ function Feature({Svg, title, description}) {
 
 export default function HomepageFeatures() {
   return (
-    <section className={styles.features}>
+    <section className={clsx(styles.features, styles.physicalAIFeatures)}>
       <div className="container">
         <div className="row">
           {FeatureList.map((props, idx) => (
